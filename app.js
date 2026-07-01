@@ -74,3 +74,37 @@ productForm.addEventListener("submit", function (event) {
 
   productForm.reset();
 });
+
+function saveProducts() {
+  localStorage.setItem(
+    "products",
+
+    JSON.stringify(products),
+  );
+}
+
+function loadProducts() {
+  const data = localStorage.getItem("products");
+
+  if (data) {
+    products = JSON.parse(data);
+
+    products.forEach(renderProduct);
+  }
+}
+
+products.push(product);
+
+saveProducts();
+
+renderProduct(product);
+
+deleteBtn.addEventListener("click", function () {
+  products = products.filter((p) => p !== product);
+
+  saveProducts();
+
+  productList.removeChild(li);
+});
+
+loadProducts();
