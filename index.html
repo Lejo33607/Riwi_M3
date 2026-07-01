@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD de Productos</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1e293b, #334155);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 700px;
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,.25);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #1e293b;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #334155;
+        }
+
+        input {
+            padding: 12px;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: .3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+
+        button {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: #3b82f6;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: .3s;
+        }
+
+        button:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+        }
+
+        ul {
+            margin-top: 25px;
+            list-style: none;
+        }
+
+        li {
+            background: #f8fafc;
+            border-left: 5px solid #3b82f6;
+            margin-bottom: 12px;
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        li button {
+            background: #ef4444;
+            padding: 8px 12px;
+            font-size: 14px;
+        }
+
+        li button:hover {
+            background: #dc2626;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>📦 Gestión de Productos</h1>
+        <p class="subtitle">
+            CRUD con DOM, Local Storage y JSON Server
+        </p>
+
+        <div class="container">
+
+    <form id="Myform">
+
+        <label for="inptPh">ID</label>
+        <input type="number" id="inptPh">
+
+        <label for="inptNm">Nombre</label>
+        <input type="text" id="inptNm">
+
+        <label for="inptPr">Precio</label>
+        <input type="number" id="inptPr">
+
+        <button type="submit">
+            Agregar Producto
+        </button>
+
+    </form>
+
+    <hr>
+
+    <h2>Lista de Productos</h2>
+
+    <div class="products-container">
+        <ul id="list">
+            <!-- Aquí se agregan los productos -->
+        </ul>
+    </div>
+
+</div>
+
+    <script src="app.js"></script>
+</body>
+</html>
