@@ -1,234 +1,76 @@
-const API_URL = "http://localhost:3000/products";
+//===========================
+// VARIABLES GLOBALES
+//===========================
 
-const form = document.getElementById("Myform");
-const list = document.getElementById("list");
+const productForm = document.getElementById("productForm");
+const productName = document.getElementById("productName");
+const productPrice = document.getElementById("productPrice");
+const productList = document.getElementById("productList");
+const syncBtn = document.getElementById("syncBtn");
+
+//===========================
+// INICIO
+//===========================
+
+console.log("Aplicación iniciada.");
+
+// Evento del formulario
+
+productForm.addEventListener("submit", function (event) {
+  event.preventDefault();
+
+  const name = productName.value.trim();
+  const price = productPrice.value.trim();
+
+  if (name === "" || price === "") {
+    console.log("Campos vacíos.");
+
+    return;
+  }
+
+  console.log("Producto válido.");
+});
 
 let products = [];
 
-/* ==========================
-   GET
-========================== */
+function renderProduct(product) {
+  const li = document.createElement("li");
 
-async function getProducts() {
-    try {
-        const response = await fetch(API_URL);
+  li.textContent = `${product.name} - $${product.price}`;
 
-        if (!response.ok) {
-            throw new Error("Error al obtener productos");
-        }
+  const deleteBtn = document.createElement("button");
 
-        products = await response.json();
+  deleteBtn.textContent = "Eliminar";
 
-        localStorage.setItem(
-            "products",
-            JSON.stringify(products)
-        );
+  deleteBtn.addEventListener("click", function () {
+    productList.removeChild(li);
+  });
 
-        renderProducts();
+  li.appendChild(deleteBtn);
 
-        console.log("GET:", products);
-
-    } catch (error) {
-        console.error(error);
-
-        const savedProducts =
-            localStorage.getItem("products");
-
-        if (savedProducts) {
-            products = JSON.parse(savedProducts);
-            renderProducts();
-        }
-    }
+  productList.appendChild(li);
 }
 
-/* ==========================
-   RENDER
-========================== */
+productForm.addEventListener("submit", function (event) {
+  event.preventDefault();
 
-function renderProducts() {
-    list.innerHTML = "";
+  const name = productName.value.trim();
+  const price = productPrice.value.trim();
 
-    products.forEach(product => {
+  if (name === "" || price === "") {
+    console.log("Campos vacíos.");
 
-        const li = document.createElement("li");
+    return;
+  }
 
-        li.textContent =
-            `ID: ${product.idProduct} | Nombre: ${product.name} | Precio: ${product.price}`;
+  const product = {
+    name,
+    price,
+  };
 
-        /* DELETE BUTTON */
+  products.push(product);
 
-        const deleteBtn =
-            document.createElement("button");
+  renderProduct(product);
 
-        deleteBtn.textContent = "Eliminar";
-
-        deleteBtn.addEventListener("click", () => {
-            deleteProduct(product.id);
-        });
-
-        li.appendChild(deleteBtn);
-
-        list.appendChild(li);
-    });
-}
-
-/* ==========================
-   POST
-========================== */
-
-async function createProduct(product) {
-
-    try {
-
-        const response = await fetch(API_URL, {
-            method: "POST",
-            headers: {
-                "Content-Type":
-                    "application/json"
-            },
-            body: JSON.stringify(product)
-        });
-
-        const data =
-            await response.json();
-
-        console.log("POST:", data);
-
-        await getProducts();
-
-    } catch (error) {
-        console.error(error);
-    }
-}
-
-/* ==========================
-   PUT
-========================== */
-
-async function updateProduct(id, product) {
-
-    try {
-
-        const response =
-            await fetch(
-                `${API_URL}/${id}`,
-                {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
-                    body:
-                        JSON.stringify(product)
-                }
-            );
-
-        const data =
-            await response.json();
-
-        console.log("PUT:", data);
-
-        await getProducts();
-
-    } catch (error) {
-        console.error(error);
-    }
-}
-
-/* ==========================
-   DELETE
-========================== */
-
-async function deleteProduct(id) {
-
-    try {
-
-        await fetch(
-            `${API_URL}/${id}`,
-            {
-                method: "DELETE"
-            }
-        );
-
-        console.log(
-            "DELETE: Producto eliminado"
-        );
-
-        await getProducts();
-
-    } catch (error) {
-        console.error(error);
-    }
-}
-
-/* ==========================
-   FORM
-========================== */
-
-form.addEventListener(
-    "submit",
-    async function (event) {
-
-        event.preventDefault();
-
-        const idProduct =
-            document
-                .getElementById("inptPh")
-                .value
-                .trim();
-
-        const name =
-            document
-                .getElementById("inptNm")
-                .value
-                .trim();
-
-        const price =
-            document
-                .getElementById("inptPr")
-                .value
-                .trim();
-
-        if (
-            !idProduct ||
-            !name ||
-            !price
-        ) {
-            alert(
-                "Todos los campos son obligatorios."
-            );
-            return;
-        }
-
-        if (
-            isNaN(idProduct) ||
-            isNaN(price)
-        ) {
-            alert(
-                "ID y Precio deben ser números."
-            );
-            return;
-        }
-
-        const product = {
-            idProduct: Number(idProduct),
-            name,
-            price: Number(price)
-        };
-
-        await createProduct(product);
-
-        form.reset();
-    }
-);
-
-/* ==========================
-   INICIO
-========================== */
-
-document.addEventListener(
-    "DOMContentLoaded",
-    () => {
-        getProducts();
-    }
-);
+  productForm.reset();
+});
